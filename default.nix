@@ -43,9 +43,9 @@ let
         zig_default_optimize_flag = "--release=safe";
       };
 
-      setupHook = "${pkgs.path}/pkgs/development/compilers/zig/setup-hook.sh";
+      setupHook = ./setup-hook.sh;
 
-      passthru = import "${pkgs.path}/pkgs/development/compilers/zig/passthru.nix" {
+      passthru = import ./passthru.nix {
         inherit (pkgs)
           stdenv
           callPackage
