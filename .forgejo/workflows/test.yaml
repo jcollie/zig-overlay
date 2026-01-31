@@ -9,3 +9,4 @@ jobs:
       - uses: actions/checkout
       - run: nix flake check
       - run: ./update
+      - run: echo hello
