@@ -2,12 +2,10 @@
   stdenv,
   lib,
   fetchurl,
-  xcbuild,
   callPackage,
   wrapCCWith,
   wrapBintoolsWith,
   overrideCC,
-  path,
   version,
   urls,
   sha256,
@@ -20,9 +18,15 @@ stdenv.mkDerivation (finalAttrs: {
 
   src = fetchurl { inherit urls sha256; };
 
-  dontConfigure = true;
-  dontBuild = true;
-  dontFixup = true;
+  # dontConfigure = true;
+  # dontBuild = true;
+  # dontFixup = true;
+
+  preBuild = ''
+    export ZIG_GLOBAL_CACHE_DIR="$TMPDIR/zig-cache";
+  '';
+
+  strictDeps = true;
 
   installPhase = ''
     mkdir -p $out/{doc,bin,lib}
@@ -32,16 +36,14 @@ stdenv.mkDerivation (finalAttrs: {
     cp zig $out/bin/zig
   '';
 
-  propagatedNativeBuildInputs = lib.optionals stdenv.hostPlatform.isDarwin [ xcbuild ];
-
   env = {
     zig_default_cpu_flag = "-Dcpu=baseline";
     zig_default_optimize_flag = "--release=safe";
   };
 
-  setupHook = "${path}/pkgs/development/compilers/zig/shell-hook.sh";
+  setupHook = ./setup-hook.sh;
 
-  passthru = import "${path}/pkgs/development/compilers/zig/passthru.nix" {
+  passthru = import ./passthru.nix {
     inherit
       stdenv
       callPackage
