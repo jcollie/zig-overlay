@@ -1,33 +1,30 @@
 {
-  pkgs ? import <nixpkgs> {},
+  pkgs ? import <nixpkgs> { },
   system ? builtins.currentSystem,
-}: let
+}:
+let
   inherit (pkgs) lib;
   sources = builtins.fromJSON (lib.strings.fileContents ./sources.json);
   mirrors = builtins.fromJSON (lib.strings.fileContents ./mirrors.json);
 
   # mkBinaryInstall makes a derivation that installs Zig from a binary.
-  mkBinaryInstall = {
-    url,
-    version,
-    sha256,
-  }: let
-    tarballName = lib.lists.last (lib.strings.split "/" url);
-    srcIsFromZigLang = lib.strings.hasPrefix "https://ziglang.org/" url;
-    urlFromMirrors =
-      builtins.map
-      (mirror: "${mirror}/${tarballName}?source=nix-zig-overlay")
-      mirrors;
-    urls =
-      if srcIsFromZigLang
-      then urlFromMirrors ++ [url]
-      else [url];
-  in
+  mkBinaryInstall =
+    {
+      url,
+      version,
+      sha256,
+    }:
+    let
+      tarballName = lib.lists.last (lib.strings.split "/" url);
+      srcIsFromZigLang = lib.strings.hasPrefix "https://ziglang.org/" url;
+      urlFromMirrors = map (mirror: "${mirror}/${tarballName}?source=nix-zig-overlay") mirrors;
+      urls = if srcIsFromZigLang then urlFromMirrors ++ [ url ] else [ url ];
+    in
     pkgs.stdenv.mkDerivation {
       inherit version;
 
       pname = "zig";
-      src = pkgs.fetchurl {inherit urls sha256;};
+      src = pkgs.fetchurl { inherit urls sha256; };
       dontConfigure = true;
       dontBuild = true;
       dontFixup = true;
@@ -38,39 +35,61 @@
         cp -r lib/* $out/lib
         cp zig $out/bin/zig
       '';
+
+      env = {
+        zig_default_cpu_flag = "-Dcpu=baseline";
+        zig_default_optimize_flag =
+          if lib.versionAtLeast version "0.12" then
+            "--release=safe"
+          else if lib.versionAtLeast version "0.11" then
+            "-Doptimize=ReleaseSafe"
+          else
+            "-Drelease-safe=true";
+      };
+
+      setupHook = ./setup-hook.sh;
+
+      propagatedNativeBuildInputs = lib.optionals pkgs.stdenv.hostPlatform.isDarwin [ pkgs.xcbuild ];
+
+      meta = {
+        description = "General-purpose programming language and toolchain for maintaining robust, optimal, and reusable software";
+        homepage = "https://ziglang.org/";
+        changelog = "https://ziglang.org/download/${version}/release-notes.html";
+        license = lib.licenses.mit;
+        mainProgram = "zig";
+        platforms = lib.platforms.unix;
+      };
     };
 
   # The packages that are tagged releases
   taggedPackages =
-    lib.attrsets.mapAttrs
-    (k: v: mkBinaryInstall {inherit (v.${system}) version url sha256;})
-    (lib.attrsets.filterAttrs
-      (k: v: (builtins.hasAttr system v) && (v.${system}.url != null) && (v.${system}.sha256 != null))
-      (builtins.removeAttrs sources ["master"]));
+    lib.attrsets.mapAttrs (k: v: mkBinaryInstall { inherit (v.${system}) version url sha256; })
+      (
+        lib.attrsets.filterAttrs (
+          k: v: (builtins.hasAttr system v) && (v.${system}.url != null) && (v.${system}.sha256 != null)
+        ) (removeAttrs sources [ "master" ])
+      );
 
   # The master packages
   masterPackages =
-    lib.attrsets.mapAttrs' (
-      k: v:
-        lib.attrsets.nameValuePair
-        (
-          if k == "latest"
-          then "master"
-          else ("master-" + k)
-        )
-        (mkBinaryInstall {inherit (v.${system}) version url sha256;})
-    )
-    (lib.attrsets.filterAttrs
-      (k: v: (builtins.hasAttr system v) && (v.${system}.url != null))
-      sources.master);
+    lib.attrsets.mapAttrs'
+      (
+        k: v:
+        lib.attrsets.nameValuePair (if k == "latest" then "master" else ("master-" + k)) (mkBinaryInstall {
+          inherit (v.${system}) version url sha256;
+        })
+      )
+      (
+        lib.attrsets.filterAttrs (
+          k: v: (builtins.hasAttr system v) && (v.${system}.url != null)
+        ) sources.master
+      );
 
   # This determines the latest /released/ version.
   latest = lib.lists.last (
-    builtins.sort
-    (x: y: (builtins.compareVersions x y) < 0)
-    (builtins.attrNames taggedPackages)
+    builtins.sort (x: y: (builtins.compareVersions x y) < 0) (builtins.attrNames taggedPackages)
   );
 in
-  # We want the packages but also add a "default" that just points to the
-  # latest released version.
-  taggedPackages // masterPackages // {"default" = taggedPackages.${latest};}
+# We want the packages but also add a "default" that just points to the
+# latest released version.
+taggedPackages // masterPackages // { "default" = taggedPackages.${latest}; }
