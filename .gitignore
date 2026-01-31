@@ -1,5 +1,5 @@
-index.json
-index.json.minisig
-sources.old.json
-sources.new.json
-result*
+/index.json
+/index.json.minisig
+/sources.old.json
+/sources.new.json
+/result*
