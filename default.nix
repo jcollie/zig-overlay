@@ -40,13 +40,7 @@ let
 
       env = {
         zig_default_cpu_flag = "-Dcpu=baseline";
-        zig_default_optimize_flag =
-          if lib.versionAtLeast version "0.12" then
-            "--release=safe"
-          else if lib.versionAtLeast version "0.11" then
-            "-Doptimize=ReleaseSafe"
-          else
-            "-Drelease-safe=true";
+        zig_default_optimize_flag = "--release=safe";
       };
 
       setupHook = "${pkgs.path}/pkgs/development/compilers/zig/setup-hook.sh";
