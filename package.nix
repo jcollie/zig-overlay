@@ -7,6 +7,7 @@
   wrapCCWith,
   wrapBintoolsWith,
   overrideCC,
+  path,
   version,
   urls,
   sha256,
@@ -38,9 +39,9 @@ stdenv.mkDerivation (finalAttrs: {
     zig_default_optimize_flag = "--release=safe";
   };
 
-  setupHook = ./setup-hook.sh;
+  setupHook = "${path}/pkgs/development/compilers/zig/shell-hook.sh";
 
-  passthru = import ./passthru.nix {
+  passthru = import "${path}/pkgs/development/compilers/zig/passthru.nix" {
     inherit
       stdenv
       callPackage

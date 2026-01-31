@@ -48,20 +48,19 @@
       # nix fmt
       formatter = lib.mapAttrs (_: pkgs: pkgs.nixpkgs-fmt) pkgsFor;
 
-      devShells = lib.mapAttrs (
-        system: pkgs: {
-          default = pkgs.mkShell {
-            nativeBuildInputs = with pkgs; [
-              curl
-              jq
-              minisign
-            ];
-          };
+      devShells = lib.mapAttrs (system: pkgs: {
+        default = pkgs.mkShell {
+          nativeBuildInputs = with pkgs; [
+            curl
+            jq
+            minisign
+          ];
+        };
 
-          # For compatibility with older versions of the `nix` binary
-          devShell = self.devShells.${pkgs.stdenv.hostPlatform.system}.default;
-        }
-      );
+      }) pkgsFor;
+
+      # For compatibility with older versions of the `nix` binary
+      devShell = eachSystem (system: self.devShells.${system}.default);
 
       # Overlay that can be imported so you can access the packages
       # using zigpkgs.master or whatever you'd like.
