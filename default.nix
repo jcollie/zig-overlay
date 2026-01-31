@@ -20,53 +20,9 @@ let
       urlFromMirrors = map (mirror: "${mirror}/${tarballName}?source=nix-zig-overlay") mirrors;
       urls = if srcIsFromZigLang then urlFromMirrors ++ [ url ] else [ url ];
     in
-    pkgs.stdenv.mkDerivation (finalAttrs: {
-      inherit version;
-
-      pname = "zig";
-      src = pkgs.fetchurl { inherit urls sha256; };
-      dontConfigure = true;
-      dontBuild = true;
-      dontFixup = true;
-      installPhase = ''
-        mkdir -p $out/{doc,bin,lib}
-        [ -d docs ] && cp -r docs/* $out/doc
-        [ -d doc ] && cp -r doc/* $out/doc
-        cp -r lib/* $out/lib
-        cp zig $out/bin/zig
-      '';
-
-      propagatedNativeBuildInputs = lib.optionals pkgs.stdenv.hostPlatform.isDarwin [ pkgs.xcbuild ];
-
-      env = {
-        zig_default_cpu_flag = "-Dcpu=baseline";
-        zig_default_optimize_flag = "--release=safe";
-      };
-
-      setupHook = ./setup-hook.sh;
-
-      passthru = import ./passthru.nix {
-        inherit (pkgs)
-          stdenv
-          callPackage
-          wrapCCWith
-          wrapBintoolsWith
-          overrideCC
-          ;
-        zig = finalAttrs.finalPackage;
-      };
-
-      meta = {
-        description = "General-purpose programming language and toolchain for maintaining robust, optimal, and reusable software";
-        homepage = "https://ziglang.org/";
-        changelog = "https://ziglang.org/download/${version}/release-notes.html";
-        license = lib.licenses.mit;
-        maintainers = with lib.maintainers; [ andrewrk ];
-        teams = [ lib.teams.zig ];
-        mainProgram = "zig";
-        platforms = lib.platforms.unix;
-      };
-    });
+    pkgs.callPackage ./package.nix {
+      inherit urls version sha256;
+    };
 
   # The packages that are tagged releases
   taggedPackages =
