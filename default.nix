@@ -49,9 +49,9 @@ let
             "-Drelease-safe=true";
       };
 
-      setupHook = ./${pkgs.path}/development/compiles/zig/setup-hook.sh;
+      setupHook = "${pkgs.path}/pkgs/development/compilers/zig/setup-hook.sh";
 
-      passthru = import ./${pkgs.path}/development/compiles/zig/passthru.nix {
+      passthru = import "${pkgs.path}/pkgs/development/compilers/zig/passthru.nix" {
         inherit (pkgs)
           stdenv
           callPackage
