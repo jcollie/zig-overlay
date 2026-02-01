@@ -44,7 +44,7 @@ let
       )
       (
         lib.attrsets.filterAttrs (
-          k: v: (builtins.hasAttr system v) && (v.${system}.url != null)
+          k: v: (builtins.hasAttr system v) && (v.${system}.url != null) && (v.${system}.sha256 != null)
         ) sources.master
       );
 

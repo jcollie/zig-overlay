@@ -41,7 +41,10 @@
         default = self.apps.${system}.zig;
         zig = {
           type = "app";
-          program = self.packages.${system}.default.outPath;
+          program = "${lib.getExe self.packages.${system}.default}";
+          meta = {
+            description = "Run the latest tagged Zig";
+          };
         };
       });
 
@@ -58,9 +61,6 @@
         };
 
       }) pkgsFor;
-
-      # For compatibility with older versions of the `nix` binary
-      devShell = eachSystem (system: self.devShells.${system}.default);
 
       # Overlay that can be imported so you can access the packages
       # using zigpkgs.master or whatever you'd like.
