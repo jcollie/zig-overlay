@@ -57,6 +57,8 @@
             curl
             jq
             minisign
+            pinact
+            reuse
           ];
         };
 
