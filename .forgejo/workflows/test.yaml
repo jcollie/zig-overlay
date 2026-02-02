@@ -21,5 +21,5 @@ jobs:
       - run: "git config user.email git@git.ocjtech.us"
       - run: "git config user.name git"
       - run: "git add -A"
-      - run: "git commit -m 'update sources.json'"
+      - run: "git commit -m 'update sources.json' || true"
       - run: "git push -u origin main"
