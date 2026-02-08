@@ -64,21 +64,5 @@
 
       }) pkgsFor;
 
-      # Overlay that can be imported so you can access the packages
-      # using zigpkgs.master or whatever you'd like.
-      overlays.default = final: prev: {
-        zigpkgs = self.packages.${prev.stdenv.hostPlatform.system};
-      };
-
-      # Templates for use with nix flake init
-      templates.compiler-dev = {
-        path = ./templates/compiler-dev;
-        description = "A development environment for Zig compiler development.";
-      };
-
-      templates.init = {
-        path = ./templates/init;
-        description = "A basic, empty development environment.";
-      };
     };
 }
