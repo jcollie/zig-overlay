@@ -1,5 +1,9 @@
 #!/usr/bin/env nix-shell
 #! nix-shell -p curl jq minisign -i sh
+
+# SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto
+# SPDX-License-Identifier: MIT
+
 set -e
 
 curl -s 'https://ziglang.org/download/community-mirrors.txt' | jq -R '.' | jq -s . > mirrors.json

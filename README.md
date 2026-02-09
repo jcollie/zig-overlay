@@ -1,3 +1,6 @@
+<!-- SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto -->
+<!-- # SPDX-License-Identifier: MIT -->
+
 # Nix Flake for Zig
 
 This repository is a Nix flake packaging the [Zig](https://ziglang.org)
@@ -13,10 +16,6 @@ The flake outputs are documented in `flake.nix` but an overview:
   * `packages.<version>` for a tagged release
   * `packages.master` for the latest nightly release
   * `packages.master-<date>` for a nightly release
-  * `overlays.default` is an overlay that adds `zigpkgs` to be the packages
-    exposed by this flake
-  * `templates.compiler-dev` to setup a development environment for Zig
-    compiler development.
 
 ## Usage
 
@@ -26,7 +25,7 @@ In your `flake.nix` file:
 
 ```nix
 {
-  inputs.zig.url = "github:mitchellh/zig-overlay";
+  inputs.zig.url = "git+https://git.ocjtech.us/jeff/zig-overlay.git";
 
   outputs = { self, zig, ... }: {
     ...
@@ -47,26 +46,6 @@ $ nix shell 'github:mitchellh/zig-overlay#master'
 $ nix shell 'github:mitchellh/zig-overlay#"0.14.0"'
 ```
 
-### Compiler Development
-
-This flake outputs a template that makes it easy to work on the Zig
-compiler itself. If you're looking to contribute to the Zig compiler,
-here are the easy steps to setup a working development environment:
-
-```sh
-# clone zig and go into that directory
-$ git clone https://github.com/ziglang/zig.git
-$ cd zig
-# setup the template
-$ nix flake init -t 'github:mitchellh/zig-overlay#compiler-dev'
-# Two options:
-# (1) start a shell, this forces bash
-$ nix develop
-# (2) If you have direnv installed, you can start the shell environment
-# in your active shell (fish, zsh, etc.):
-$ direnv allow
-```
-
 ## FAQ
 
 ### Why is a Nightly Missing?
@@ -80,7 +59,7 @@ we could miss a day. This is why historical dates beyond a certain point
 don't exist; they predate this overlay (or original overlays this derives
 from).
 
-2. The official Zig CI only generates a master release if the CI runs 
+2. The official Zig CI only generates a master release if the CI runs
 full green. During certain periods of development, a full day may go by
 where the master branch of the Zig compiler is broken. In this scenario,
 a master build (aka "nightly") is not built or released at all.

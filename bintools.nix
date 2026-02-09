@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © 2003-2026 Eelco Dolstra and the Nixpkgs/NixOS contributors
+# SPDX-License-Identifier: MIT
+
 {
   lib,
   stdenv,

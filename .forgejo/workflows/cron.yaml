@@ -1,7 +1,10 @@
+# SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto
+# SPDX-License-Identifier: MIT
+
 name: Cron
 on:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "12 */12 * * *"
   workflow_dispatch:
 jobs:
   update:

@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto
+# SPDX-License-Identifier: MIT
+
 {
   description = "Zig compiler binaries.";
 

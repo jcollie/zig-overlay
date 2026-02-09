@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto
+# SPDX-License-Identifier: MIT
+
 {
   pkgs ? import <nixpkgs> { },
   system ? builtins.currentSystem,
