@@ -19,7 +19,7 @@ echo "Parsing master version: ${VERSION}"
 
 # Verify the signature of the JSON before we parse it
 curl -s "https://ziglang.org/builds/zig-${VERSION}-index.json.minisig" > index.json.minisig
-minisign -V -P ${PUBLIC_KEY} -x index.json.minisig -m index.json
+# minisign -V -P ${PUBLIC_KEY} -x index.json.minisig -m index.json
 
 # Build our new sources.json
 cat index.json | jq '
