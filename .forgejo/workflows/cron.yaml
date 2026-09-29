@@ -1,3 +1,4 @@
+# SPDX-FileCopyrightText: © 2026 Jeffrey C. Ollie
 # SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto
 # SPDX-License-Identifier: MIT
 
@@ -11,7 +12,7 @@ on:
 jobs:
   update:
     name: Update
-    runs-on: nixos
+    runs-on: nixos-do-s
     enable-openid-connect: true
     steps:
       - name: Check out
@@ -28,7 +29,7 @@ jobs:
       # is new, so a quiet run commits nothing.
       - name: Commit and push any changes
         run: |
-          git config user.email git@git.ocjtech.us
+          git config user.email git@git.jcollie.dev
           git config user.name git
           git add sources.sqlite3 nix/
           if git diff --cached --quiet; then
