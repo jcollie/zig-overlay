@@ -2,19 +2,44 @@
 # SPDX-License-Identifier: MIT
 
 name: Cron
+
 on:
   schedule:
     - cron: "12 */4 * * *"
   workflow_dispatch:
+
 jobs:
   update:
     name: Update
     runs-on: nixos
+    enable-openid-connect: true
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - run: ./update
-      - run: "git config user.email git@git.ocjtech.us"
-      - run: "git config user.name git"
-      - run: "git add -A"
-      - run: "git commit -m 'update sources.json' || true"
-      - run: "git push -u origin main"
+      - name: Check out
+        uses: https://code.forgejo.org/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Fetch the Zig release index and regenerate the sources
+        run: nix run .#update
+
+      # A generation that does not evaluate is never committed.
+      - name: Check that every system still evaluates
+        run: nix flake check --no-build --all-systems
+
+      # The update tool leaves the database byte-for-byte alone when nothing
+      # is new, so a quiet run commits nothing.
+      - name: Commit and push any changes
+        run: |
+          git config user.email git@git.ocjtech.us
+          git config user.name git
+          git add sources.sqlite3 nix/
+          if git diff --cached --quiet; then
+            echo "nothing new"
+          else
+            git commit -m 'update sources'
+            git push origin HEAD:main
+          fi
+
+      - name: Push to the cache
+        if: ${{ !cancelled() }}
+        uses: https://git.jcollie.dev/jeff/niks3-push@3f85f501658e379783381291241c6f8315a92716
+        with:
+          server-url: https://niks3.jcollie.dev

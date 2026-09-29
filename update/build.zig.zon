@@ -1,0 +1,36 @@
+// SPDX-FileCopyrightText: © 2026 Jeffrey C. Ollie <jeff@ocjtech.us>
+// SPDX-License-Identifier: MIT
+
+.{
+    .name = .zig_overlay_update,
+    .version = "0.0.0",
+    .fingerprint = 0xa94d818fa8f182eb, // Changing this has security and trust implications.
+    .minimum_zig_version = "0.16.0",
+    .dependencies = .{
+        .zqlite = .{
+            .url = "git+https://github.com/karlseguin/zqlite.zig#b519eea9b1a2b5fcad68af6d0629e717e8746684",
+            .hash = "zqlite-0.0.1-RWLaY8M8nAB4m0tlSpT9A5PGUwX_JfWC5VlPjLe7lG2Q",
+        },
+        .datetime = .{
+            .url = "git+https://git.jcollie.dev/jeff/zig-datetime.git#96f8d4a6946b89b68b8c5eeb6f274647662c6aa9",
+            .hash = "datetime-0.0.1-6-va70MhRQAoQi0NvxUHRez3_PcVc3-Sz702lZwzTH4G",
+        },
+        .uri = .{
+            .url = "git+https://git.jcollie.dev/jeff/zig-uri.git#c472509ef662a1528f24e283799280bebbeb2777",
+            .hash = "uri-0.1.0-yCrwNNH2EwBMp75OiyjnW1w5FMiFdI0gWghu4QMEVWtU",
+        },
+        .http = .{
+            .url = "git+https://git.jcollie.dev/jeff/zig-http.git#ad62ed86e5b8466bac032ca0b24f6f3b7dce9fa8",
+            .hash = "http-0.0.0-e28mQNVIGQB3-ksVltDG1Y9ENZ_mV-EwaVhmqfDF5ad1",
+        },
+        .dns_client = .{
+            .url = "git+https://git.jcollie.dev/jeff/zig-dns-client.git#ef4f807b314188d17de80cfe389822f4ee3b8dd1",
+            .hash = "dns_client-0.1.0-L4NvbmzfDwDTyDCVrpZSZzB0HjLLr7Tvtg8VsSO4OBKD",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

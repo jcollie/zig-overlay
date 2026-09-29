@@ -1,8 +1,7 @@
 # SPDX-FileCopyrightText: © 2022 Mitchell Hashimoto
 # SPDX-License-Identifier: MIT
 
-/index.json
-/index.json.minisig
-/sources.old.json
-/sources.new.json
 /result*
+/update/.zig-cache
+/update/zig-out
+/update/zig-pkg

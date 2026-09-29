@@ -1,16 +1,11 @@
 version = 1
 
 [[annotations]]
-path = "flake.lock"
+path = ["flake.lock", "sources.sqlite3", "nix/mirrors.nix", "nix/sources-*.nix"]
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
-path = "mirrors.json"
-SPDX-FileCopyrightText = "NONE"
-SPDX-License-Identifier = "CC0-1.0"
-
-[[annotations]]
-path = "sources.json"
-SPDX-FileCopyrightText = "NONE"
-SPDX-License-Identifier = "CC0-1.0"
+path = ["update/build.zig.zon.nix"]
+SPDX-FileCopyrightText = "© 2026 Jeffrey C. Ollie <jeff@ocjtech.us>"
+SPDX-License-Identifier = "MIT"

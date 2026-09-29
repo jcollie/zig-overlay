@@ -11,7 +11,7 @@
   overrideCC,
   version,
   urls,
-  sha256,
+  hash,
   ...
 }:
 stdenv.mkDerivation (finalAttrs: {
@@ -19,7 +19,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   pname = "zig";
 
-  src = fetchurl { inherit urls sha256; };
+  src = fetchurl { inherit urls hash; };
 
   # dontConfigure = true;
   # dontBuild = true;
