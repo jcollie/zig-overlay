@@ -31,10 +31,20 @@ not packaged.
 
 Each package downloads from the Zig community mirrors first and falls back to
 ziglang.org, as the Zig project recommends, and checks the tarball against the
-SHA-256 published in Zig's release index. Every package also carries the
-`cc`, `bintools`, `stdenv` and `fetchDeps` helpers, and a setup hook that
-provides the configure, build, check and install phases for a Zig project, in
-the same shape as `zig` in nixpkgs.
+SHA-256 published in Zig's release index.
+
+The packages can stand in for `zig` from nixpkgs when building other
+packages. Their setup hook and their `hook`, `cc`, `bintools`, `stdenv` and
+`fetchDeps` attributes are taken from the Zig package in the pinned nixpkgs
+rather than copied here. Putting one in `nativeBuildInputs` supplies the
+configure, build, check and install phases for a Zig project, with these
+limits:
+
+- Zig before 0.11 rejects the `-j` flag the hook passes, so those versions
+  have no setup hook and only put `zig` on the `PATH`.
+- `--release=safe` is passed only from Zig 0.12, which introduced it, so 0.11
+  builds in Debug mode unless the project asks otherwise.
+- Nightlies count as older than the release they lead up to.
 
 ## Usage
 
