@@ -46,6 +46,18 @@ limits:
   builds in Debug mode unless the project asks otherwise.
 - Nightlies count as older than the release they lead up to.
 
+On Linux, `bin/zig` is a wrapper around the binary. Zig works out the
+native ABI and glibc version from the ELF interpreter of `/usr/bin/env`, a
+path compiled into the binary, and the official Linux binaries are statically
+linked against musl. A Nix build sandbox has no `/usr/bin/env`, so a build
+there would target musl and fail to find libc headers, or link against the
+wrong libc. Where `/usr/bin/env` is missing, the wrapper runs Zig under
+[bubblewrap](https://github.com/containers/bubblewrap) in a mount namespace
+that has nixpkgs' `env` at that path, so the native target is glibc as nixpkgs
+builds it. Where `/usr/bin/env` exists, the wrapper runs Zig directly. This
+needs unprivileged user namespaces inside the build sandbox, which Nix
+provides on Linux unless the host forbids them.
+
 ## Usage
 
 In a `flake.nix`:

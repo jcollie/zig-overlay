@@ -11,6 +11,9 @@
   wrapBintoolsWith,
   overrideCC,
   xcbuild,
+  bubblewrap,
+  coreutils,
+  runtimeShell,
   version,
   urls,
   hash,
@@ -62,6 +65,15 @@ stdenv.mkDerivation (finalAttrs: {
     [ -d doc ] && cp -r doc/* $out/doc
     cp -r lib/* $out/lib
     cp zig $out/bin/zig
+  ''
+  + lib.optionalString stdenv.hostPlatform.isLinux ''
+    mv $out/bin/zig $out/bin/.zig-unwrapped
+    substitute ${./zig-wrapper.sh} $out/bin/zig \
+      --subst-var-by shell ${runtimeShell} \
+      --subst-var-by zig $out/bin/.zig-unwrapped \
+      --subst-var-by env ${lib.getExe' coreutils "env"} \
+      --subst-var-by bwrap ${lib.getExe bubblewrap}
+    chmod +x $out/bin/zig
   '';
 
   env = {
