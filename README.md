@@ -54,9 +54,15 @@ there would target musl and fail to find libc headers, or link against the
 wrong libc. Where `/usr/bin/env` is missing, the wrapper runs Zig under
 [bubblewrap](https://github.com/containers/bubblewrap) in a mount namespace
 that has nixpkgs' `env` at that path, so the native target is glibc as nixpkgs
-builds it. Where `/usr/bin/env` exists, the wrapper runs Zig directly. This
-needs unprivileged user namespaces inside the build sandbox, which Nix
-provides on Linux unless the host forbids them.
+builds it. Where `/usr/bin/env` exists, the wrapper runs Zig directly.
+
+Bubblewrap needs unprivileged user namespaces inside the build sandbox, which
+Nix provides on Linux unless the host forbids them. Ubuntu from 24.04 does, by
+way of AppArmor, and GitHub's Ubuntu runners with it. Where bubblewrap cannot
+start, the wrapper runs Zig directly, so the native target is musl: a build
+that links no libc is unaffected, and one that does fails to find its headers.
+On such a host, `sysctl kernel.apparmor_restrict_unprivileged_userns=0` lets
+bubblewrap run.
 
 ## Usage
 

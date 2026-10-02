@@ -18,4 +18,14 @@ for dir in /*; do
 done
 args+=(--ro-bind @env@ /usr/bin/env --chdir "$PWD")
 
+# Some hosts forbid the user namespace bubblewrap needs -- Ubuntu from 24.04
+# restricts them with AppArmor, which is what GitHub's runners are -- and then
+# bubblewrap fails before Zig runs. Its exit status cannot be told apart from
+# Zig's own, so try it first with something that cannot fail, and where it
+# cannot start, run Zig directly: the native target is then musl, as it was
+# before this wrapper existed, which is wrong only for a build that links libc.
+if ! @bwrap@ "${args[@]}" -- @env@ true 2>/dev/null; then
+  exec @zig@ "$@"
+fi
+
 exec @bwrap@ "${args[@]}" -- @zig@ "$@"
