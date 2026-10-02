@@ -25,6 +25,12 @@
       hash = "sha256-FNtIhLMUFL1jeHkDbB5uM187pEzKxZ3xBBY3KKDKsw4=";
       url = "https://ziglang.org/download/0.16.0/zig-s390x-linux-0.16.0.tar.xz";
     };
+    "0.17.0" = {
+      version = "0.17.0";
+      date = "2026-10-01";
+      hash = "sha256-E5BfEZibZVZsVE0ZHUvFvV1vhY4wMgjPHS8JDl2RtRI=";
+      url = "https://ziglang.org/download/0.17.0/zig-s390x-linux-0.17.0.tar.xz";
+    };
   };
   builds = [
     {

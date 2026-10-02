@@ -31,6 +31,12 @@
       hash = "sha256-JQO+jsxZZfH3liRx0mfZ+D/LPML3/3isNAk7lyK76pM=";
       url = "https://ziglang.org/download/0.16.0/zig-loongarch64-linux-0.16.0.tar.xz";
     };
+    "0.17.0" = {
+      version = "0.17.0";
+      date = "2026-10-01";
+      hash = "sha256-WmAAuGYgHDs4ILVj/P0pZBGFOT59NQOeUCNdtBjYNnw=";
+      url = "https://ziglang.org/download/0.17.0/zig-loongarch64-linux-0.17.0.tar.xz";
+    };
   };
   builds = [
     {

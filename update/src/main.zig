@@ -97,7 +97,24 @@ pub fn main(init: std.process.Init) !void {
     defer conn.close();
 
     try conn.exec("create table if not exists mirrors (url text unique)", .{});
-    try conn.exec("create table if not exists artifacts (hash text unique, date text not null, version text not null, arch text not null, url text not null)", .{});
+    // An artifact is a URL and the bytes behind it, not the bytes alone: on
+    // the day of a release the index lists the same tarball twice, as the
+    // release under /download/ and as master under /builds/, and both have to
+    // be kept for the release to be published at all.
+    try conn.exec("create table if not exists artifacts (hash text not null, date text not null, version text not null, arch text not null, url text not null, unique (hash, url))", .{});
+
+    // Databases written when the hash alone was unique. SQLite cannot drop a
+    // constraint, so the table is rebuilt.
+    if (try conn.row("select 1 from sqlite_master where name = 'artifacts' and sql like '%hash text unique%';", .{})) |row| {
+        row.deinit();
+        try conn.transaction();
+        errdefer conn.rollback();
+        try conn.exec("create table artifacts_new (hash text not null, date text not null, version text not null, arch text not null, url text not null, unique (hash, url))", .{});
+        try conn.exec("insert into artifacts_new select hash, date, version, arch, url from artifacts", .{});
+        try conn.exec("drop table artifacts", .{});
+        try conn.exec("alter table artifacts_new rename to artifacts", .{});
+        try conn.commit();
+    }
 
     // Databases written before the names were normalized.
     for (arch_aliases.keys(), arch_aliases.values()) |zig_name, nix_name| {
@@ -217,7 +234,7 @@ pub fn main(init: std.process.Init) !void {
                     const artifact = artifact_entry.value_ptr;
 
                     artifact: {
-                        if (try conn.row("select 1 from artifacts where hash = ?1;", .{artifact.shasum})) |row| {
+                        if (try conn.row("select 1 from artifacts where hash = ?1 and url = ?2;", .{ artifact.shasum, artifact.tarball })) |row| {
                             defer row.deinit();
                             break :artifact;
                         }
@@ -225,7 +242,6 @@ pub fn main(init: std.process.Init) !void {
                         try conn.transaction();
                         errdefer conn.rollback();
 
-                        try conn.exec("delete from artifacts where hash = ?1", .{artifact.shasum});
                         try conn.exec("insert into artifacts (hash, date, version, arch, url) values (?1, ?2, ?3, ?4, ?5)", .{
                             artifact.shasum, release.date, release.version orelse key, normalizeArch(arch), artifact.tarball,
                         });
@@ -282,14 +298,13 @@ pub fn main(init: std.process.Init) !void {
                     const hash = artifact.sha256 orelse continue;
                     const url = artifact.url orelse continue;
                     artifact: {
-                        if (try conn.row("select 1 from artifacts where hash = ?1;", .{artifact.sha256})) |row| {
+                        if (try conn.row("select 1 from artifacts where hash = ?1 and url = ?2;", .{ hash, url })) |row| {
                             defer row.deinit();
                             break :artifact;
                         }
                         try conn.transaction();
                         errdefer conn.rollback();
 
-                        try conn.exec("delete from artifacts where hash = ?1", .{hash});
                         try conn.exec("insert into artifacts (hash, date, version, arch, url) values (?1, ?2, ?3, ?4, ?5)", .{
                             hash, key, version, normalizeArch(arch), url,
                         });

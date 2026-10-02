@@ -67,6 +67,12 @@
       hash = "sha256-TjTiean4VjWN5CBJC1MZdMPTf483B+758DQuksFMMB8=";
       url = "https://ziglang.org/download/0.16.0/zig-x86-linux-0.16.0.tar.xz";
     };
+    "0.17.0" = {
+      version = "0.17.0";
+      date = "2026-10-01";
+      hash = "sha256-VeOeF1zVswmK/CnsR7JZATT1uHQXU2n7mue46DbXUxo=";
+      url = "https://ziglang.org/download/0.17.0/zig-x86-linux-0.17.0.tar.xz";
+    };
     "0.6.0" = {
       version = "0.6.0";
       date = "2020-04-13";
