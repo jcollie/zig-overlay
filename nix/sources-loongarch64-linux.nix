@@ -147,5 +147,11 @@
       hash = "sha256-ArpJN7J/GO4YtX3IgjXtnH1udifc1aGU9MkugMK5Akc=";
       url = "https://ziglang.org/builds/zig-loongarch64-linux-0.18.0-dev.367+187d0bf9e.tar.xz";
     }
+    {
+      version = "0.18.0-dev.470+6817928c3";
+      date = "2026-10-22";
+      hash = "sha256-gD0SVzmYfGHjX8CaMoFxcgxZ6hpr8H1tHY5pD0nLAcc=";
+      url = "https://ziglang.org/builds/zig-loongarch64-linux-0.18.0-dev.470+6817928c3.tar.xz";
+    }
   ];
 }
