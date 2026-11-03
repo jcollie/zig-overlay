@@ -61,6 +61,12 @@
       hash = "sha256-cx4oh+Zv/0H9w09/2divqBTYbXQm9YJ4BfiFSyl3aEs=";
       url = "https://ziglang.org/download/0.17.0/zig-powerpc64le-linux-0.17.0.tar.xz";
     };
+    "0.17.1" = {
+      version = "0.17.1";
+      date = "2026-11-02";
+      hash = "sha256-8GkRAQtE+k/djod1ZprPSZMQ/xjiCbs5Ly6yQo3MwF4=";
+      url = "https://ziglang.org/download/0.17.1/zig-powerpc64le-linux-0.17.1.tar.xz";
+    };
   };
   builds = [
     {

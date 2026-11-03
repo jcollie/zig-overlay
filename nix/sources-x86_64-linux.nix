@@ -73,6 +73,12 @@
       hash = "sha256-HL6d+fJ+a3jRTMvKQ7ZwOkBO957xxGPekB1/CI1OICY=";
       url = "https://ziglang.org/download/0.17.0/zig-x86_64-linux-0.17.0.tar.xz";
     };
+    "0.17.1" = {
+      version = "0.17.1";
+      date = "2026-11-02";
+      hash = "sha256-NYGGPjy8/Q/ODvxoLOfp6T2pZmipd3kdNWom0qfpsXo=";
+      url = "https://ziglang.org/download/0.17.1/zig-x86_64-linux-0.17.1.tar.xz";
+    };
     "0.2.0" = {
       version = "0.2.0";
       date = "2018-03-15";

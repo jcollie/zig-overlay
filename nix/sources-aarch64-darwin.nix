@@ -73,6 +73,12 @@
       hash = "sha256-tgfpuSNHkKAIEWrlvbccYkO4S5+0KlOp5w/eQcBsU2o=";
       url = "https://ziglang.org/download/0.17.0/zig-aarch64-macos-0.17.0.tar.xz";
     };
+    "0.17.1" = {
+      version = "0.17.1";
+      date = "2026-11-02";
+      hash = "sha256-dfG8eh6YUvF+yaDBiV92fE7FbUa8ioNJIO7OHQNZ3Y0=";
+      url = "https://ziglang.org/download/0.17.1/zig-aarch64-macos-0.17.1.tar.xz";
+    };
     "0.7.0" = {
       version = "0.7.0";
       date = "2020-11-08";
