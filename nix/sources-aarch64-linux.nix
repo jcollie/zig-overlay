@@ -9363,5 +9363,11 @@
       hash = "sha256-5lS4SiZHTwXkoT2YVmKjzS9NghymczzgROkiQSY7T60=";
       url = "https://ziglang.org/builds/zig-aarch64-linux-0.18.0-dev.855+aa2d45d91.tar.xz";
     }
+    {
+      version = "0.18.0-dev.860+8e8cf3835";
+      date = "2026-11-04";
+      hash = "sha256-zvO0YC6CiBsB7melJMSwQ/igd3vqwxFF/eYE9HZZ60I=";
+      url = "https://ziglang.org/builds/zig-aarch64-linux-0.18.0-dev.860+8e8cf3835.tar.xz";
+    }
   ];
 }
