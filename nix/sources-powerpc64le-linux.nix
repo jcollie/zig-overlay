@@ -273,5 +273,11 @@
       hash = "sha256-AiFXMoiOwJmRyuAVtXMRKKkmATLZZjCjOZcnw+Ry0Uw=";
       url = "https://ziglang.org/builds/zig-powerpc64le-linux-0.18.0-dev.954+60635c2bd.tar.xz";
     }
+    {
+      version = "0.18.0-dev.1005+75d48dfff";
+      date = "2026-11-10";
+      hash = "sha256-gFCc6cg3aCvdctG0uWfWebjvR00TyQ+iU/Hc169AQ/8=";
+      url = "https://ziglang.org/builds/zig-powerpc64le-linux-0.18.0-dev.1005+75d48dfff.tar.xz";
+    }
   ];
 }
