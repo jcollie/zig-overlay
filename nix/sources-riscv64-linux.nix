@@ -339,5 +339,11 @@
       hash = "sha256-oOUyvl3MKeibt13EFwH6Opyt4hcvzqIwyzz0BP5/ZcM=";
       url = "https://ziglang.org/builds/zig-riscv64-linux-0.18.0-dev.1124+2ecf4b5e2.tar.xz";
     }
+    {
+      version = "0.18.0-dev.1151+8dfb7a7cc";
+      date = "2026-11-14";
+      hash = "sha256-E26DCqVlzYH4THned2aP/lhUO5XyylGGfRsUHWFPHbs=";
+      url = "https://ziglang.org/builds/zig-riscv64-linux-0.18.0-dev.1151+8dfb7a7cc.tar.xz";
+    }
   ];
 }
