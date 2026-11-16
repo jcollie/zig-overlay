@@ -261,5 +261,11 @@
       hash = "sha256-hUWQzQTe9ujOPi9nlBBBs4uwnWszUFinCqHs0pfLN2o=";
       url = "https://ziglang.org/builds/zig-s390x-linux-0.18.0-dev.1151+8dfb7a7cc.tar.xz";
     }
+    {
+      version = "0.18.0-dev.1153+c62948217";
+      date = "2026-11-15";
+      hash = "sha256-TksAo/OzxUixpaWUUJ8xnUcI/cmcsUgS5CivmGYy/gU=";
+      url = "https://ziglang.org/builds/zig-s390x-linux-0.18.0-dev.1153+c62948217.tar.xz";
+    }
   ];
 }
