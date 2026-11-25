@@ -8715,5 +8715,11 @@
       hash = "sha256-7kjEf0nUYatfeNdsM5DtICIECMO71AJuFp7adMV8pgw=";
       url = "https://ziglang.org/builds/zig-aarch64-macos-0.18.0-dev.1284+2385a0153.tar.xz";
     }
+    {
+      version = "0.18.0-dev.1295+1fb0e6330";
+      date = "2026-11-25";
+      hash = "sha256-rjHVy6cpXyn+9pVdG46Krcbb0hNFCOOtEQU2fo/RMWQ=";
+      url = "https://ziglang.org/builds/zig-aarch64-macos-0.18.0-dev.1295+1fb0e6330.tar.xz";
+    }
   ];
 }
